@@ -31,8 +31,9 @@ public class PostService {
 	public List<PostResponse> getAllPostsOfAUser(Long userId) {
 
 		AppUser currentUser = appUserDetailsService.getCurrentUser();
-
-		List<Post> posts = postRepository.findAllByUserOrderByIdDesc(currentUser);
+		AppUser user = appUserRepository.findById(userId)
+				.orElseThrow(() -> new IllegalStateException("user at this id not found!"));
+		List<Post> posts = postRepository.findAllByUserOrderByIdDesc(user);
 
 		List<PostResponse> allPostResponses = new ArrayList<>();
 		for(Post post: posts) {

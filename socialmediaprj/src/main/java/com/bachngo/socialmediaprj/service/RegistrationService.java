@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.bachngo.socialmediaprj.config.AppConfig;
 import com.bachngo.socialmediaprj.dto.RegistrationRequest;
 import com.bachngo.socialmediaprj.models.AppUser;
 import com.bachngo.socialmediaprj.models.AppUserRole;
@@ -20,6 +21,7 @@ public class RegistrationService {
 	private final AppUserDetailsService appUserDetailsService;
 	private final ConfirmationTokenService confirmationTokenService;
 	private final EmailSender emailSender;
+	private final AppConfig appConfig;
 	
 	public String register(RegistrationRequest request) {
 		
@@ -31,7 +33,7 @@ public class RegistrationService {
 				AppUserRole.USER
 				));
 		
-		String link = "http://localhost:8080/api/v1/registration/confirm?token="+ token;
+		String link =  appConfig.getUrl()+"/api/v1/registration/confirm?token="+ token;
 		emailSender.send(request.getEmail(), buildEmail(request.getFirstName(), link));
 		return token;
 	}
